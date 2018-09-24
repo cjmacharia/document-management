@@ -64,5 +64,53 @@ module.exports = {
 				message: err
 			});
 		});
-	}
+	},
+
+	getUsers: (req, res) => {
+		User.find({}).then(users => {
+			res.status(200).json({
+				data: users
+			});
+		}).catch(err => {
+			res.status(404).json({
+				error: err
+			});
+		});
+	},
+
+	getOneUser:  (req, res) => {
+		const id = req.params.id;
+		User.findById({_id: id}, (err, user) => {
+			if(err){
+				res.status(404).json({
+					error: 'The user does not exist',
+				});
+			} if(user != null) {
+				res.status(200).json({
+					data: user
+				});
+			} else {
+				res.status(404).json({
+					error: 'The user does not exist',
+				});
+			}
+		});
+	},
+
+	deleteUser: (req, res) => {
+		const id = req.params.id;
+		User.findByIdAndRemove({_id: id}, (err) => {
+			if(err){
+				res.status(404).json({
+					error: 'The user does not exist',
+				});
+			} else {
+				res.status(200).json({
+					message: 'user successfully deleted'
+				});
+			}
+		});
+	},
+
+
 };

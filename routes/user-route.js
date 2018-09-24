@@ -9,7 +9,14 @@ module.exports = (app) => {
 
 	//get all users
 
-	// app.post('/', users.getAll);
+	app.get('/getusers', users.getUsers);
+
+	// get one user
+	
+	app.get('/getuser/:id', users.getOneUser);
+
+	//delete a user
+
+	app.delete('/deleteuser/:id', users.deleteUser);
 
 };
-
