@@ -80,17 +80,37 @@ module.exports = {
 
 	getOneUser:  (req, res) => {
 		const id = req.params.id;
-		console.log(id);
 		User.findById({_id: id}, (err, user) => {
+			if(err){
+				res.status(404).json({
+					error: 'The user does not exist',
+				});
+			} if(user != null) {
+				res.status(200).json({
+					data: user
+				});
+			} else {
+				res.status(404).json({
+					error: 'The user does not exist',
+				});
+			}
+		});
+	},
+
+	deleteUser: (req, res) => {
+		const id = req.params.id;
+		User.findByIdAndRemove({_id: id}, (err) => {
 			if(err){
 				res.status(404).json({
 					error: 'The user does not exist',
 				});
 			} else {
 				res.status(200).json({
-					data: user
+					message: 'user successfully deleted'
 				});
 			}
 		});
-	}
+	},
+
+
 };
