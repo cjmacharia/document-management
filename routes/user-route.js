@@ -7,7 +7,6 @@ module.exports = (app) => {
 
 	app.post('/login', users.login);
 
-
 	//get all users
 
 	app.get('/getusers', users.getUsers);
@@ -21,4 +20,3 @@ module.exports = (app) => {
 	app.delete('/deleteuser/:id', users.deleteUser);
 
 };
-
