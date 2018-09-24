@@ -1,0 +1,20 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const dbConfig = require('./config/db.config');
+//const userRoutes = require('./routes/user-route');
+const app = express();
+
+app.use(bodyParser.json());
+const port = 8080;
+console.log(dbConfig.url);
+mongoose.connect(dbConfig.url,  { useNewUrlParser: true }).then(() => {
+	console.log('successfully connected to the database');
+}).catch((err) =>{
+	console.log('an error occured', err);
+});
+
+require('./routes/user-route')(app);
+app.listen(port, () => {
+	console.log('server runing on' + port);
+});
