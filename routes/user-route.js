@@ -11,6 +11,9 @@ module.exports = (app) => {
 
 	app.get('/getusers', users.getUsers);
 
+	// get one user
+	
+	app.get('/getuser/:id', users.getOneUser);
 
 };
 

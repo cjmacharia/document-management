@@ -77,4 +77,20 @@ module.exports = {
 			});
 		});
 	},
+
+	getOneUser:  (req, res) => {
+		const id = req.params.id;
+		console.log(id);
+		User.findById({_id: id}, (err, user) => {
+			if(err){
+				res.status(404).json({
+					error: 'The user does not exist',
+				});
+			} else {
+				res.status(200).json({
+					data: user
+				});
+			}
+		});
+	}
 };
