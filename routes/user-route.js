@@ -9,7 +9,8 @@ module.exports = (app) => {
 
 	//get all users
 
-	// app.post('/', users.getAll);
+	app.get('/getusers', users.getUsers);
+
 
 };
 
