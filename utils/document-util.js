@@ -10,7 +10,7 @@ module.exports = {
 		else if (!validContent) {
 			return 'The content cannot be an emplty field';
 		} else {
-			return data;
+			return true;
 		}
 	}
 };

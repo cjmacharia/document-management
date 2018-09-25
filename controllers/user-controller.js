@@ -18,8 +18,8 @@ module.exports = {
 					email: req.body.email,
 					password: hash
 				});
-				const r = util.validate(userSignUp);
-				if (r === true) { 
+				const result = util.validate(userSignUp);
+				if (result === userSignUp) { 
 					userSignUp.save()
 						.then(data => {
 							res.status(201);
@@ -33,7 +33,7 @@ module.exports = {
 						});
 				}	else {
 					res.status(401).json({
-						error: r
+						error: result
 					});
 				}
 			}
