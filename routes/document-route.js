@@ -6,4 +6,8 @@ module.exports = (app) => {
 	app.get('/document', document.get);
 
 	app.put('/document/:id', document.update);
+
+	app.get('/document/:id', document.getOne);
+
+	app.delete('/document/:id', document.delete);
 };
