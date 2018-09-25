@@ -1,6 +1,8 @@
 const  User = require('../models/user-model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+var mongoose = require('mongoose');
+
 module.exports = {
 	signUp: (req, res) => {
 		bcrypt.hash(req.body.password, 10, (err, hash) => {
@@ -10,6 +12,7 @@ module.exports = {
 				});
 			} else {
 				const userSignUp = new User({
+					_id: new mongoose.Types.ObjectId(),
 					name: req.body.name,
 					email: req.body.email,
 					password: hash

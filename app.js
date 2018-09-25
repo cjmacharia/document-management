@@ -13,7 +13,7 @@ mongoose.connect(dbConfig.url,  { useNewUrlParser: true }).then(() => {
 }).catch((err) =>{
 	console.log('an error occured', err);
 });
-
+require('./routes/document-route')(app);
 require('./routes/user-route')(app);
 app.listen(port, () => {
 	console.log('server runing on' + port);
