@@ -19,5 +19,24 @@ module.exports = {
 				});
 			});
 	},
+
+	get: (req, res) => {
+		Document.find({}, (err, data) => {
+			if (err) {
+				res.status(500).json({
+					error: err
+				});
+			} else if (data === null) {
+				res.status(404).json({
+					error: 'document not found'
+				});
+			} else {
+				res.status(200).json({
+					payload : data
+				});
+			}
+
+		});
+	}
    
 };
