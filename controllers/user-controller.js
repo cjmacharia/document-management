@@ -1,7 +1,8 @@
-const  User = require('../models/user-model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const  User = require('../models/user-model');
+const util = require('../utils/user-util');
 
 module.exports = {
 	signUp: (req, res) => {
@@ -17,17 +18,24 @@ module.exports = {
 					email: req.body.email,
 					password: hash
 				});
-				userSignUp.save()
-					.then(data => {
-						res.status(201);
-						res.json({
-							message: 'Succssfully created a user',
-							response: data});
-					}).catch(err => {
-						res.status(500).json({
-							message: err.message
+				const r = util.validate(userSignUp);
+				if (r === true) { 
+					userSignUp.save()
+						.then(data => {
+							res.status(201);
+							res.json({
+								message: 'Succssfully created a user',
+								response: data});
+						}).catch(err => {
+							res.status(500).json({
+								message: err.message
+							});
 						});
+				}	else {
+					res.status(401).json({
+						error: r
 					});
+				}
 			}
 		});
 	},
