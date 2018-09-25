@@ -1,7 +1,8 @@
 const Document = require('../models/document-model');
+const util = require('../utils/document-util');
 var mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
-mongoose.set('ensureIndex', false);
+
 module.exports = {
 	create: (req, res) => {
 		const CreateDocs = new Document ({
@@ -9,17 +10,25 @@ module.exports = {
 			title: req.body.title,
 			content: req.body.content
 		});
-		CreateDocs.save()
-			.then(data => {
-				res.status(201).json({
-					message: 'successfully save',
-					content: data,
+		const result = util.validate(CreateDocs);
+		if (result === true) {
+			CreateDocs.save()
+				.then(data => {
+					res.status(201).json({
+						message: 'successfully save',
+						content: data,
+					});
+				}).catch(err => {
+					res.status(500).json({
+						error: err
+					});
 				});
-			}).catch(err => {
-				res.status(500).json({
-					error: err
-				});
+		} else {
+			res.status(401).json({
+				error: result
 			});
+		}
+		
 	},
 
 	get: (req, res) => {
