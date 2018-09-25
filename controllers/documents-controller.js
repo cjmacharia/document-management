@@ -1,5 +1,7 @@
 const Document = require('../models/document-model');
 var mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
+mongoose.set('ensureIndex', false);
 module.exports = {
 	create: (req, res) => {
 		const CreateDocs = new Document ({
@@ -35,8 +37,25 @@ module.exports = {
 					payload : data
 				});
 			}
-
+		});
+	},
+	
+	update: (req, res) => {
+		const id = req.params.id;
+		Document.findByIdAndUpdate({_id: id}, {
+			title: req.body.title,
+			content: req.body.content,
+			modifiedAt: Date.now()
+		}, {new: true}, (err, data) => {
+			if (err) {
+				res.status(500).json({
+					error: err
+				});
+			} else {
+				res.status(200).json ({
+					payload: data
+				});
+			}
 		});
 	}
-   
 };
