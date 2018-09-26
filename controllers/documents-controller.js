@@ -8,10 +8,13 @@ module.exports = {
 		const CreateDocs = new Document ({
 			_id: new mongoose.Types.ObjectId(),
 			title: req.body.title,
-			content: req.body.content
+			content: req.body.content,
+			ownerId: req.userData.userId
+
 		});
 		const result = util.validate(CreateDocs);
 		if (result === true) {
+			
 			CreateDocs.save()
 				.then(data => {
 					res.status(201).json({
