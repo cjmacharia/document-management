@@ -51,12 +51,11 @@ module.exports = {
 	},
 	
 	getOne: (req, res) => {
-		console.log(req.data);
 		res.status(200).json({
 			data: req.data
 		});
 	},
-	
+
 	update: (req, res) => {
 		const doc = {
 			title: req.body.title,
@@ -88,6 +87,11 @@ module.exports = {
 				});
 			}
 		});
-		
 	},
+
+	getByUser: (req, res) => {
+		res.status(200).json({
+			data: req.data
+		});
+	}
 };

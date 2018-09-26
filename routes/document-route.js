@@ -5,11 +5,15 @@ const documentModel = require('../models/document-model');
 module.exports = (app) => {
 	app.param('uid', (req, res, next, id) => {
 		user.findById(id, (err, doc) => {
-			if (err) return next(err);
+			if (err) {
+				return res.status(404).json({
+					error: 'The user does not exist'
+				});
+			}
 			if(!doc) {
-				err = new Error('Not Found');
-				err.status = 404;
-				return next(err);
+				return res.status(404).json({
+					error: 'The user does not exist'
+				});
 			}
 			req.data = doc;
 			return next();
@@ -41,4 +45,6 @@ module.exports = (app) => {
 	app.get('/document/:did', document.getOne);
 
 	app.delete('/document/:did', document.delete);
+
+	app.get('/user/:uid/document/:did', document.getByUser);
 };
