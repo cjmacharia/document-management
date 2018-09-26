@@ -13,7 +13,6 @@ module.exports = {
 		});
 		const result = util.validate(CreateDocs);
 		if (result === true) {
-			
 			CreateDocs.save()
 				.then(data => {
 					res.status(201).json({
@@ -90,6 +89,12 @@ module.exports = {
 	},
 
 	getByUser: (req, res) => {
+		res.status(200).json({
+			data: req.data
+		});
+	},
+
+	getAllByUser: (req, res) =>{
 		res.status(200).json({
 			data: req.data
 		});

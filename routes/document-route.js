@@ -1,10 +1,10 @@
 const document = require('../controllers/documents-controller');
 const checkAuth = require('../middlewares/checkauth');
-const user = require('../models/user-model');
 const documentModel = require('../models/document-model');
+const user = require('../models/user-model');
 module.exports = (app) => {
 	app.param('uid', (req, res, next, id) => {
-		user.findById(id, (err, doc) => {
+		documentModel.find({ownerId: id}, (err, doc) => {
 			if (err) {
 				return res.status(404).json({
 					error: 'The user does not exist'
@@ -12,7 +12,7 @@ module.exports = (app) => {
 			}
 			if(!doc) {
 				return res.status(404).json({
-					error: 'The user does not exist'
+					error: 'The user does not exist '
 				});
 			}
 			req.data = doc;
@@ -22,6 +22,7 @@ module.exports = (app) => {
 
 	app.param('did', (req, res, next, id) => {
 		documentModel.findById(id, (err, doc) => {
+
 			if (err) {
 				return res.status(404).json({
 					error: 'The document does not exist'
@@ -36,15 +37,17 @@ module.exports = (app) => {
 			next();
 		});
 	});
-	app.post('/document',checkAuth, document.create);
+	app.post('/documents',checkAuth, document.create);
 
-	app.get('/document', document.get);
+	app.get('/documents', document.get);
 
-	app.put('/document/:did', document.update);
+	app.put('/documents/:did', document.update);
 
-	app.get('/document/:did', document.getOne);
+	app.get('/documents/:did', document.getOne);
 
-	app.delete('/document/:did', document.delete);
+	app.delete('/documents/:did', document.delete);
 
-	app.get('/user/:uid/document/:did', document.getByUser);
+	app.get('/user/:uid/documents/:did', document.getByUser);
+
+	app.get('/user/:uid/documents', document.getAllByUser);
 };
