@@ -49,7 +49,6 @@ module.exports = {
 					message: 'authentication failed'
 				});
 			} else { 
-				console.log(user[0].password,'pass');
 				bcrypt.compare(req.body.password, user[0].password, (err, result) => {
 					if (err) {
 						res.status(401).json({
