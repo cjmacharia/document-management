@@ -1,7 +1,7 @@
 const document = require('../controllers/documents-controller');
-
+const checkAuth = require('../middlewares/checkauth');
 module.exports = (app) => {
-	app.post('/document', document.create);
+	app.post('/document',checkAuth, document.create);
 
 	app.get('/document', document.get);
 
