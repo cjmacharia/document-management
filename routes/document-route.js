@@ -18,14 +18,18 @@ module.exports = (app) => {
 
 	app.param('did', (req, res, next, id) => {
 		documentModel.findById(id, (err, doc) => {
-			if (err) return next(err);
+			if (err) {
+				return res.status(404).json({
+					error: 'The document does not exist'
+				});
+			}
 			if(!doc) {
-				err = new Error('Not Found');
-				err.status = 404;
-				return next(err);
+				return res.status(404).json({
+					error: 'The document does not exist'
+				});
 			}
 			req.data = doc;
-			return next();
+			next();
 		});
 	});
 	app.post('/document',checkAuth, document.create);

@@ -2,7 +2,6 @@ const Document = require('../models/document-model');
 const util = require('../utils/document-util');
 var mongoose = require('mongoose');
 mongoose.set('useFindAndModify', false);
-
 module.exports = {
 	create: (req, res) => {
 		const CreateDocs = new Document ({
@@ -31,7 +30,6 @@ module.exports = {
 				error: result
 			});
 		}
-		
 	},
 
 	get: (req, res) => {
@@ -53,24 +51,26 @@ module.exports = {
 	},
 	
 	getOne: (req, res) => {
-		res.status(200).send({
+		console.log(req.data);
+		res.status(200).json({
 			data: req.data
 		});
 	},
+	
 	update: (req, res) => {
-		const id = req.params.id;
-		Document.findByIdAndUpdate({_id: id}, {
+		const doc = {
 			title: req.body.title,
 			content: req.body.content,
-			modifiedAt: Date.now()
-		}, {new: true}, (err, data) => {
+			modifiedAt: Date.now(),
+		};
+		req.data.updateOne(doc, (err, data) => {
 			if (err) {
 				res.status(500).json({
 					error: err
 				});
 			} else {
 				res.status(200).json ({
-					payload: data
+					data: doc
 				});
 			}
 		});
@@ -88,17 +88,6 @@ module.exports = {
 				});
 			}
 		});
-		// const id = req.params.id;
-		// Document.findByIdAndRemove({_id: id}, (err) => {
-		// 	if(err){
-		// 		res.status(404).json({
-		// 			error: 'The document does not exist',
-		// 		});
-		// 	} else {
-		// 		res.status(200).json({
-		// 			message: 'user successfully deleted'
-		// 		});
-		// 	}
-		// });
+		
 	},
 };
