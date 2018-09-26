@@ -53,24 +53,10 @@ module.exports = {
 	},
 	
 	getOne: (req, res) => {
-		const id = req.params.id;
-		Document.findById({_id: id}, (err, document) => {
-			if(err){
-				res.status(404).json({
-					error: 'The document does not exist',
-				});
-			} if(document != null) {
-				res.status(200).json({
-					data: document
-				});
-			} else {
-				res.status(404).json({
-					error: 'The document does not exist',
-				});
-			}
+		res.status(200).send({
+			data: req.data
 		});
 	},
-
 	update: (req, res) => {
 		const id = req.params.id;
 		Document.findByIdAndUpdate({_id: id}, {
@@ -91,17 +77,28 @@ module.exports = {
 	},
 
 	delete: (req, res) => {
-		const id = req.params.id;
-		Document.findByIdAndRemove({_id: id}, (err) => {
-			if(err){
+		req.data.remove((err) => {
+			if (err) { 
 				res.status(404).json({
 					error: 'The document does not exist',
 				});
 			} else {
 				res.status(200).json({
-					message: 'user successfully deleted'
+					message: 'successfully deleted'
 				});
 			}
 		});
+		// const id = req.params.id;
+		// Document.findByIdAndRemove({_id: id}, (err) => {
+		// 	if(err){
+		// 		res.status(404).json({
+		// 			error: 'The document does not exist',
+		// 		});
+		// 	} else {
+		// 		res.status(200).json({
+		// 			message: 'user successfully deleted'
+		// 		});
+		// 	}
+		// });
 	},
 };
