@@ -38,7 +38,7 @@ const requirements = [
 ];
 
 program
-	.version('0.0.1');
+	.version('0.0.1')
 	.description('contact management system');
 program
 	.command('createAdmin')
