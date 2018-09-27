@@ -1,4 +1,5 @@
 const validator = require('validator');
+const bcrypt = require('bcrypt');
 module.exports = {
 	validate: (data) => {
 		const email = data.email;
@@ -18,5 +19,15 @@ module.exports = {
 			return data;
 		}
 		return data;
+	},
+	hashPassword: (req, res, data) => {
+		console.log(data, 'fdshjf' );
+		try{
+			const hashedPassword = bcrypt.hash(data, 10);
+			return hashedPassword;
+		} catch(err){
+			return err;
+		}
+			
 	}
 };

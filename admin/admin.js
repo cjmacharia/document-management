@@ -9,7 +9,6 @@ mongoose.connect(dbConfig.url,  { useNewUrlParser: true }).then(() => {
 });
 
 const createAdmin = (data) => {
-	console.log(data);
 	User.create(data, (err) => {
 		assert.equal(null, err);
 		console.info('successfully added');

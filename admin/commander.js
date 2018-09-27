@@ -2,7 +2,8 @@
 const { prompt } = require('inquirer');
 const program = require('commander');
 const mongoose = require('mongoose');
-const createAdmin   = require('./admin').createAdmin;
+const { createAdmin }   = require('./admin');
+const util = require('../utils/user-util');
 const requirements = [
 	{
 		type: 'value',
@@ -37,19 +38,23 @@ const requirements = [
 ];
 
 program
-	.version('0.0.1')
+	.version('0.0.1');
 	.description('contact management system');
 program
 	.command('createAdmin')
 	.alias('a')
 	.description('Add an admin user')
-	.action(() => {
-		prompt(requirements).then(answers => {
-			createAdmin(answers);
-		}).catch(err => {
-			console.log(err);
+	.action(async (req, res) => {
+		let answers = await prompt(requirements)
+		const pass = await util.hashPassword(req, res, answers.password);
+		createAdmin({
+			_id: answers._id,
+			name: answers.name,
+			email: answers.email,
+			role: answers.role,
+			password: pass
+
 		});
 	});
 
-// Assert that a VALID command is provided 
-program.parse(process.argv);
+  program.parse(process.argv);

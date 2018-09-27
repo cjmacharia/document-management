@@ -5,39 +5,34 @@ const  User = require('../models/user-model');
 const util = require('../utils/user-util');
 
 module.exports = {
-	signUp: (req, res) => {
-		bcrypt.hash(req.body.password, 10, (err, hash) => {
-			if(err) {
-				return res.status.json({
-					error: err
-				});
-			} else {
-				const userSignUp = new User({
-					_id: new mongoose.Types.ObjectId(),
-					name: req.body.name,
-					email: req.body.email,
-					password: hash
-				});
-				const result = util.validate(userSignUp);
-				if (result === userSignUp) { 
-					userSignUp.save()
-						.then(data => {
-							res.status(201);
-							res.json({
-								message: 'Succssfully created a user',
-								response: data});
-						}).catch(err => {
-							res.status(500).json({
-								message: err.message
-							});
-						});
-				}	else {
-					res.status(401).json({
-						error: result
-					});
-				}
-			}
+	signUp :async (req, res) => {
+
+		const hashedPass = await util.hashPassword(req, res, req.body.password);
+		console.log(hashedPass, 'hehehehehe');
+		const userSignUp = new User({
+			_id: new mongoose.Types.ObjectId(),
+			name: req.body.name,
+			email: req.body.email,
+			password: hashedPass
 		});
+		const result = util.validate(userSignUp);
+		if (result === userSignUp) { 
+			userSignUp.save()
+				.then(data => {
+					res.status(201);
+					res.json({
+						message: 'Succssfully created a user',
+						response: data});
+				}).catch(err => {
+					res.status(500).json({
+						message: err.message
+					});
+				});
+		}	else {
+			res.status(401).json({
+				error: result
+			});
+		}
 	},
 
 	login: (req, res) => {
