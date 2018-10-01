@@ -4,7 +4,7 @@ import documentModel from '../models/document-model';
 export default (app) => {
 	app.param('uid', (req, res, next, id) => {
 		documentModel.find({ownerId: id}, (err, doc) => {
-			if (err) {
+			if (doc.length < 1 ) {
 				return res.status(404).json({
 					error: 'The user does not exist'
 				});
@@ -40,13 +40,13 @@ export default (app) => {
 
 	app.get('/documents', documentsController.get);
 
-	app.put('/documents/:did', documentsController.update);
+	app.put('/document/:did', documentsController.update);
 
-	app.get('/documents/:did', documentsController.getOne);
+	app.get('/document/:did', documentsController.getOne);
 
-	app.delete('/documents/:did', documentsController.deleteDocs);
+	app.delete('/document/:did', documentsController.deleteDocs);
 
-	app.get('/user/:uid/documents/:did', documentsController.getByUser);
+	app.get('/user/:uid/document/:did', documentsController.getByUser);
 
 	app.get('/user/:uid/documents', documentsController.getAllByUser);
 };

@@ -1,5 +1,6 @@
 import  Document from '../models/document-model';
 import  util from '../utils/document-util';
+import  * as responses from '../utils/response';
 import  mongoose from 'mongoose';
 // mongoose.set('useFindAndModify', false);
 
@@ -16,46 +17,31 @@ class documentController {
 		if (result === true) {
 			try {
 				let data = await CreateDocs.save();
-				res.status(201).json({
-					message: 'successfully save',
-					content: data,
-				});
+				responses.creationSuccess(res, data);
 			} catch(err) {
-				res.status(500).json({
-					error: err
-				});
+				responses.serverError(err);
 			}
 		} else {
-			res.status(401).json({
-				error: result
-			});
+			responses.AuthenticationError(res);
 		}
 	}
 
 	static async get (req, res) {
 		try { 
 			let documents = await Document.find({});
-			
 			if (documents === null) {
-				res.status(404).json({
-					error: 'document not found'
-				});
+				responses.NotFoundError(res);
 			} else {
-				res.status(200).json({
-					payload : documents
-				});
+				responses.getResultsSuccess(res, documents);
 			}
 		} catch(err) {
-			res.status(404).json({
-				error: 'the document does not exist'
-			});
-			
+			responses.NotFoundError(res);
 		}
 	}
+
 	static async getOne (req, res) {
-		res.status(200).json({
-			data: req.data
-		});
+		let data = req.data;
+		responses.getResultsSuccess(res, data);
 	}
 
 	static async update (req, res) {
@@ -66,40 +52,39 @@ class documentController {
 		};
 		try { 
 			await req.data.updateOne(doc);
-			res.status(200).json ({
-				message: 'Document successfully updated'
-			});
+			responses.updateContentSuccess(res);
 		} catch(err){
-			res.status(500).json({
-				error: err
-			});
+			responses.serverError(res);
 		}
 	}
 
 	static async deleteDocs (req, res) {
 		try{ 
 			await req.data.remove();
-			res.status(200).json({
-				message: 'successfully deleted'
-			});
+			responses.deleteContentSuccess(res);
 		} catch(err) {
-			res.status(404).json({
-				error: err
-			});
+			responses.NotFoundError(res);
 		}
 	}
 
 	static async getByUser (req, res) {
-		res.status(200).json({
-			data: req.data
-		});
+		try { 
+			let data = await req.data;
+			responses.getResultsSuccess(res, data);
+		} catch(err) {
+			responses.serverError(res);
+		}
 	}
 
-	static async getAllByUser (req, res)  {
-		res.status(200).json({
-			data: req.data
-		});
+	static  async getAllByUser (req, res) {
+		try { 
+			let data = await req.data;
+			responses.getResultsSuccess(res, data);
+		} catch(err) {
+			responses.serverError(res);
+		}
 	}
+
 }
 
 export default documentController;
