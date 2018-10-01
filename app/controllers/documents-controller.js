@@ -1,9 +1,10 @@
-const Document = require('../models/document-model');
-const util = require('../utils/document-util');
-var mongoose = require('mongoose');
+import  Document from '../models/document-model';
+import  util from '../utils/document-util';
+import  mongoose from 'mongoose';
 mongoose.set('useFindAndModify', false);
-module.exports = {
-	create: (req, res) => {
+
+export class documentController {
+	static async create (req, res) {
 		const CreateDocs = new Document ({
 			_id: new mongoose.Types.ObjectId(),
 			title: req.body.title,
@@ -13,31 +14,28 @@ module.exports = {
 		});
 		const result = util.validate(CreateDocs);
 		if (result === true) {
-			CreateDocs.save()
-				.then(data => {
-					res.status(201).json({
-						message: 'successfully save',
-						content: data,
-					});
-				}).catch(err => {
+			try {
+			let data = await CreateDocs.save();
+				res.status(201).json({
+					message: 'successfully save',
+					content: data,
+				});
+			} catch(err) {
 					res.status(500).json({
 						error: err
 					});
-				});
+				}
 		} else {
 			res.status(401).json({
 				error: result
 			});
 		}
-	},
+	}
 
-	get: (req, res) => {
-		Document.find({}, (err, data) => {
-			if (err) {
-				res.status(500).json({
-					error: err
-				});
-			} else if (data === null) {
+	static async get (req, res) {
+		try { 
+		let documents = await Document.find({})
+			if (documents === null) {
 				res.status(404).json({
 					error: 'document not found'
 				});
@@ -46,14 +44,18 @@ module.exports = {
 					payload : data
 				});
 			}
-		});
-	},
+		} catch(err) {
+			res.status(404).json({
+				error: 'the document does not exist'
+			})
+			
+	}
 	
-	getOne: (req, res) => {
+	static async getOne (req, res) {
 		res.status(200).json({
 			data: req.data
 		});
-	},
+	}
 
 	update: (req, res) => {
 		const doc = {
@@ -74,7 +76,7 @@ module.exports = {
 		});
 	},
 
-	delete: (req, res) => {
+	deleteDocs: (req, res) => {
 		req.data.remove((err) => {
 			if (err) { 
 				res.status(404).json({
