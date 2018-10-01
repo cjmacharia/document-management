@@ -46,6 +46,7 @@ program
 	.description('Add an admin user')
 	.action(async (req, res) => {
 		let answers = await prompt(requirements)
+		const validateRequirements = await util.validate(answers)
 		const pass = await util.hashPassword(req, res, answers.password);
 		createAdmin({
 			_id: answers._id,

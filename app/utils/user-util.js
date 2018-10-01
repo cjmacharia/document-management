@@ -21,8 +21,7 @@ module.exports = {
 		return data;
 	},
 	hashPassword: (req, res, data) => {
-		console.log(data, 'fdshjf' );
-		try{
+		try {
 			const hashedPassword = bcrypt.hash(data, 10);
 			return hashedPassword;
 		} catch(err){
