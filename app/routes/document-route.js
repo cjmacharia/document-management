@@ -1,8 +1,7 @@
-const document = require('../controllers/documents-controller');
-const checkAuth = require('../middlewares/checkauth');
-const documentModel = require('../models/document-model');
-const user = require('../models/user-model');
-module.exports = (app) => {
+import documentsController from '../controllers/documents-controller';
+import checkAuth from '../middlewares/checkauth';
+import documentModel from '../models/document-model';
+export default (app) => {
 	app.param('uid', (req, res, next, id) => {
 		documentModel.find({ownerId: id}, (err, doc) => {
 			if (err) {
@@ -37,17 +36,17 @@ module.exports = (app) => {
 			next();
 		});
 	});
-	app.post('/documents',checkAuth, document.create);
+	app.post('/documents',checkAuth, documentsController.create);
 
-	app.get('/documents', document.get);
+	app.get('/documents', documentsController.get);
 
-	app.put('/documents/:did', document.update);
+	app.put('/documents/:did', documentsController.update);
 
-	app.get('/documents/:did', document.getOne);
+	app.get('/documents/:did', documentsController.getOne);
 
-	app.delete('/documents/:did', document.delete);
+	app.delete('/documents/:did', documentsController.deleteDocs);
 
-	app.get('/user/:uid/documents/:did', document.getByUser);
+	app.get('/user/:uid/documents/:did', documentsController.getByUser);
 
-	app.get('/user/:uid/documents', document.getAllByUser);
+	app.get('/user/:uid/documents', documentsController.getAllByUser);
 };
