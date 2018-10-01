@@ -1,7 +1,7 @@
 import  Document from '../models/document-model';
 import  util from '../utils/document-util';
 import  mongoose from 'mongoose';
-mongoose.set('useFindAndModify', false);
+// mongoose.set('useFindAndModify', false);
 
 class documentController {
 	static async create (req, res) {
@@ -10,9 +10,9 @@ class documentController {
 			title: req.body.title,
 			content: req.body.content,
 			ownerId: req.userData.userId
-
 		});
 		const result = util.validate(CreateDocs);
+
 		if (result === true) {
 			try {
 				let data = await CreateDocs.save();
@@ -35,6 +35,7 @@ class documentController {
 	static async get (req, res) {
 		try { 
 			let documents = await Document.find({});
+			
 			if (documents === null) {
 				res.status(404).json({
 					error: 'document not found'
