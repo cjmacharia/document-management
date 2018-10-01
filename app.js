@@ -5,7 +5,6 @@ import { url } from'./config/db.config';
 import documentRoutes from './app/routes/document-route';
 import userRoutes from './app/routes/user-route';
 const app = express();
-console.log(url)
 app.use(bodyParser.json());
 
 const port = 8080;
@@ -16,6 +15,12 @@ if (process.env.NODE_ENV === 'DEVELOPMENT'){
 		console.log('an error occured', err);
 	});
 }
+
+app.use((err, req, res, next) => {
+	res.json({
+		errorre: 'doesnt work'
+	});
+});
 documentRoutes(app);
 userRoutes(app);
 const server = app.listen(port, () => {

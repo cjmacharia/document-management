@@ -3,7 +3,7 @@ import jwt from'jsonwebtoken';
 import mongoose from 'mongoose';
 import  User  from '../models/user-model';
 import util  from '../utils/user-util';
-
+import  * as responses from '../utils/response';
 class UserController { 
 	static async  signUp  (req, res)  {
 		const hashedPass = await util.hashPassword(req, res, req.body.password);
@@ -16,70 +16,48 @@ class UserController {
 
 		const result = util.validate(userSignUp);
 		if (result === userSignUp) { 
-			try{ 
+			try { 
 				let data = await userSignUp.save();
-				res.status(201);
-				res.json({
-					message: 'Succssfully created a user',
-					response: data});
+				responses.registrationSuccess(res, data);
 			} catch(err) {
-				res.status(500).json({
-					message: err.message
-				});
+				responses.registrationError(res, err);
 			}
-		}	else {
-			res.status(401).json({
-				error: result
-			});
+		}	
+		else {
+			responses.registrationDefaultError(res, result);
 		}
 	}
 
 	static async login (req, res) {
-		try{ 
-			let  user = await User.findOne({email: req.body.email
-			});
+		try { 
+			let  user = await User.findOne({email: req.body.email});
 			if(user === null) {
-				res.status(404).json({
-					message: 'authentication failed'
-				});
+				responses.userNotFoundError(res);
 			} else { 
-				bcrypt.compare(req.body.password, user.password, (err, result) => {
-					if (err) {
-						res.status(401).json({
-							message: 'authentication failed here'
-						});
+				try { 
+					await bcrypt.compare(req.body.password, user.password);
+					const token = jwt.sign({ email: user.email,
+						userId: user.id
+					}, process.env.JWT_KEY, {
+						expiresIn: '1hr'
 					}
-					if (result) {
-						const token = jwt.sign({ email: user.email,
-							userId: user.id
-						}, process.env.JWT_KEY, {
-							expiresIn: '1hr'
-						}
-						);
-						res.status(200).json({
-							message: 'Authentication successful', 
-							token: token
-						});
-					}
-				});
+					);
+					responses.loginSuccess(res, token);
+				} catch(err) {
+					responses.AuthenticationError(res);
+				}
 			}
 		} catch(err) {
-			res.status(500).json({
-				message: err
-			});
+			responses.serverError(res, err);
 		}
 	}
 	
 	static async getUsers (req, res) {
 		try { 
 			let users  = await User.find({});
-			res.status(200).json({
-				data: users
-			});
+			responses.getResultsSuccess(res, users);
 		} catch(err) {
-			res.status(404).json({
-				error: err
-			});
+			responses.serverError(res, err);			
 		}
 	}
 
@@ -88,18 +66,12 @@ class UserController {
 		try { 
 			let user = await User.findById({_id: id});
 			if(user != null) {
-				res.status(200).json({
-					data: user
-				});
+				responses.getResultsSuccess(res, user);
 			} else {
-				res.status(404).json({
-					error: 'The user does not exist',
-				});
+				responses.userNotFoundError(res);
 			}
 		} catch (err) {
-			res.status(404).json({
-				error: err
-			});
+			responses.userNotFoundError(res);
 		}
 	}
 

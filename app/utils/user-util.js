@@ -12,7 +12,7 @@ module.exports = {
 		else if (!validName) {
 			return 'the name can not be empty';
 		} else if (validName) {
-			const re = name.match(/^[A-Za-z]+$/);
+			const re = name.match(/^[A-Za-z\s]*$/);
 			if(!re){
 				return 'the name can not contain a number';
 			} 

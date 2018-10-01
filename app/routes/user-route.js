@@ -1,4 +1,6 @@
 import  UserController  from '../controllers/user-controller';
+import checkAuth from '../middlewares/checkauth';
+
 export default (app) => {
 	// create a user
 	app.post('/signup', UserController.signUp);
