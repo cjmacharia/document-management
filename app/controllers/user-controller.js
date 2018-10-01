@@ -80,18 +80,12 @@ class UserController {
 		try { 
 			let user = await User.findByIdAndRemove({_id: id});
 			if (user === null) {
-				res.status(404).json({
-					message: 'the user does not exist'
-				});
+				responses.userNotFoundError(res);
 			} else { 
-				res.status(200).json({
-					message: 'user successfully deleted'
-				});
+				responses.deleteContentSuccess(res);
 			}
 		} catch(err) {
-			res.status(404).json({
-				error: 'The user does not exist',
-			});
+			responses.userNotFoundError(res);
 		}
 	}
 }

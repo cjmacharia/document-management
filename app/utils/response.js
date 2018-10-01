@@ -29,7 +29,7 @@ export const loginSuccess = (res, token) => {
 
 export const AuthenticationError = (res) => {
 	res.status(401).json({
-		message: 'authentication failed here'
+		message: 'Authentication failed here'
 	});
 };
 
@@ -42,5 +42,11 @@ export const serverError = (res, err) => {
 export const getResultsSuccess = (res, results) => {
 	res.status(200).json({
 		data: results
+	});
+};
+
+export const deleteContentSuccess = (res) => {
+	res.status(200).json({
+		message: 'Successfully deleted'
 	});
 };

@@ -16,11 +16,6 @@ if (process.env.NODE_ENV === 'DEVELOPMENT'){
 	});
 }
 
-app.use((err, req, res, next) => {
-	res.json({
-		errorre: 'doesnt work'
-	});
-});
 documentRoutes(app);
 userRoutes(app);
 const server = app.listen(port, () => {
