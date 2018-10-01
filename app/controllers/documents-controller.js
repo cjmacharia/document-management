@@ -29,7 +29,6 @@ class documentController {
 	static async get (req, res) {
 		try { 
 			let documents = await Document.find({});
-
 			if (documents === null) {
 				responses.NotFoundError(res);
 			} else {
@@ -69,14 +68,23 @@ class documentController {
 	}
 
 	static async getByUser (req, res) {
-		let data = req.data;
-		responses.getResultsSuccess(res, data);
+		try { 
+			let data = await req.data;
+			responses.getResultsSuccess(res, data);
+		} catch(err) {
+			responses.serverError(res);
+		}
 	}
 
-	static async getAllByUser (req, res)  {
-		let data = req.data;
-		responses.getResultsSuccess(res, data);
+	static  async getAllByUser (req, res) {
+		try { 
+			let data = await req.data;
+			responses.getResultsSuccess(res, data);
+		} catch(err) {
+			responses.serverError(res);
+		}
 	}
+
 }
 
 export default documentController;
