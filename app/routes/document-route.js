@@ -1,9 +1,9 @@
-import { create, get, update, getOne, deleteDocs, getByUser, getAllByUser } from '../controllers/documents-controller';
+import documentsController from '../controllers/documents-controller';
 import checkAuth from '../middlewares/checkauth';
-import { find, findById } from '../models/document-model';
+import documentModel from '../models/document-model';
 export default (app) => {
 	app.param('uid', (req, res, next, id) => {
-		find({ownerId: id}, (err, doc) => {
+		documentModel.find({ownerId: id}, (err, doc) => {
 			if (err) {
 				return res.status(404).json({
 					error: 'The user does not exist'
@@ -20,7 +20,7 @@ export default (app) => {
 	});
 
 	app.param('did', (req, res, next, id) => {
-		findById(id, (err, doc) => {
+		documentModel.findById(id, (err, doc) => {
 
 			if (err) {
 				return res.status(404).json({
@@ -36,17 +36,17 @@ export default (app) => {
 			next();
 		});
 	});
-	app.post('/documents',checkAuth, create);
+	app.post('/documents',checkAuth, documentsController.create);
 
-	app.get('/documents', get);
+	app.get('/documents', documentsController.get);
 
-	app.put('/documents/:did', update);
+	app.put('/documents/:did', documentsController.update);
 
-	app.get('/documents/:did', getOne);
+	app.get('/documents/:did', documentsController.getOne);
 
-	app.delete('/documents/:did', deleteDocs);
+	app.delete('/documents/:did', documentsController.deleteDocs);
 
-	app.get('/user/:uid/documents/:did', getByUser);
+	app.get('/user/:uid/documents/:did', documentsController.getByUser);
 
-	app.get('/user/:uid/documents', getAllByUser);
+	app.get('/user/:uid/documents', documentsController.getAllByUser);
 };
