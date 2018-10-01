@@ -18,7 +18,7 @@ class UserController {
 		if (result === userSignUp) { 
 			try { 
 				let data = await userSignUp.save();
-				responses.registrationSuccess(res, data);
+				responses.creationSuccess(res, data);
 			} catch(err) {
 				responses.registrationError(res, err);
 			}
@@ -32,7 +32,7 @@ class UserController {
 		try { 
 			let  user = await User.findOne({email: req.body.email});
 			if(user === null) {
-				responses.userNotFoundError(res);
+				responses.NotFoundError(res);
 			} else { 
 				try { 
 					await bcrypt.compare(req.body.password, user.password);
@@ -68,10 +68,10 @@ class UserController {
 			if(user != null) {
 				responses.getResultsSuccess(res, user);
 			} else {
-				responses.userNotFoundError(res);
+				responses.NotFoundError(res);
 			}
 		} catch (err) {
-			responses.userNotFoundError(res);
+			responses.NotFoundError(res);
 		}
 	}
 
@@ -80,12 +80,12 @@ class UserController {
 		try { 
 			let user = await User.findByIdAndRemove({_id: id});
 			if (user === null) {
-				responses.userNotFoundError(res);
+				responses.NotFoundError(res);
 			} else { 
 				responses.deleteContentSuccess(res);
 			}
 		} catch(err) {
-			responses.userNotFoundError(res);
+			responses.NotFoundError(res);
 		}
 	}
 }

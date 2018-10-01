@@ -46,7 +46,7 @@ export default (app) => {
 
 	app.delete('/documents/:did', documentsController.deleteDocs);
 
-	app.get('/user/:uid/documents/:did', documentsController.getByUser);
+	app.get('/user/:uid/document/:did', documentsController.getByUser);
 
 	app.get('/user/:uid/documents', documentsController.getAllByUser);
 };

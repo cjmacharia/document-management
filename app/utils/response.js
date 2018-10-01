@@ -1,5 +1,7 @@
-export const registrationSuccess = (response, data) => {
-	response.status(201).json(data);
+export const creationSuccess = (response, data) => {
+	response.status(201).json({
+		message: 'successfully created',
+		data: data});
 };
 
 export const registrationError = (res, err) => {
@@ -14,9 +16,9 @@ export const registrationDefaultError = (res, result) => {
 	});
 };
 
-export const userNotFoundError = (res) => {
+export const NotFoundError = (res) => {
 	res.status(404).json({
-		error: 'The user does not exist'
+		error: 'Hey!! the details you are requesting for do not exist'
 	});
 };
 
@@ -29,7 +31,7 @@ export const loginSuccess = (res, token) => {
 
 export const AuthenticationError = (res) => {
 	res.status(401).json({
-		message: 'Authentication failed here'
+		message: 'Authentication failed '
 	});
 };
 
@@ -47,6 +49,12 @@ export const getResultsSuccess = (res, results) => {
 
 export const deleteContentSuccess = (res) => {
 	res.status(200).json({
-		message: 'Successfully deleted'
+		message: 'details Successfully deleted'
+	});
+};
+
+export const updateContentSuccess = (res) => {
+	res.status(200).json({
+		message: 'details Successfully updated'
 	});
 };
