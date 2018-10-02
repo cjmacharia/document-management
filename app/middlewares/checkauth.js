@@ -1,12 +1,11 @@
 import { verify } from 'jsonwebtoken';
+import  * as responses from '../utils/response';
 export default (req, res, next) => {
 	try {
 		const decoded = verify(req.headers.token, process.env.JWT_KEY);
 		req.userData = decoded;
 		next();
 	} catch (error) {
-		return res.status(401).json({
-			message: error
-		});
+		responses.AuthenticationError(res);
 	} 
 };
