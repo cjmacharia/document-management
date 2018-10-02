@@ -2,8 +2,10 @@ import bcrypt from 'bcrypt';
 import jwt from'jsonwebtoken';
 import mongoose from 'mongoose';
 import  User  from '../models/user-model';
-import util  from '../utils/user-util';
+import * as util  from '../utils/user-util';
 import  * as responses from '../utils/response';
+
+
 class UserController { 
 	static async  signUp  (req, res)  {
 		const hashedPass = await util.hashPassword(req, res, req.body.password);

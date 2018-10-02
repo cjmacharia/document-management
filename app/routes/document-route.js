@@ -1,6 +1,7 @@
 import documentsController from '../controllers/documents-controller';
 import checkAuth from '../middlewares/checkauth';
 import documentModel from '../models/document-model';
+
 export default (app) => {
 	app.param('uid', (req, res, next, id) => {
 		documentModel.find({ownerId: id}, (err, doc) => {

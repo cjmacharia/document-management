@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-module.exports = (req, res, next) => {
+import { verify } from 'jsonwebtoken';
+export default (req, res, next) => {
 	try {
-		const decoded = jwt.verify(req.headers.token, process.env.JWT_KEY);
+		const decoded = verify(req.headers.token, process.env.JWT_KEY);
 		req.userData = decoded;
 		next();
 	} catch (error) {
