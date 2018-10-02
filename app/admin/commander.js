@@ -4,6 +4,7 @@ const program = require('commander');
 const mongoose = require('mongoose');
 const { createAdmin }   = require('./admin');
 const util = require('../utils/user-util');
+
 const requirements = [
 	{
 		type: 'value',
@@ -45,8 +46,8 @@ program
 	.alias('a')
 	.description('Add an admin user')
 	.action(async (req, res) => {
-		let answers = await prompt(requirements)
-		const validateRequirements = await util.validate(answers)
+		let answers = await prompt(requirements);
+		await util.validate(answers);
 		const pass = await util.hashPassword(req, res, answers.password);
 		createAdmin({
 			_id: answers._id,
@@ -58,4 +59,4 @@ program
 		});
 	});
 
-  program.parse(process.argv);
+program.parse(process.argv);
